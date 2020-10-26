@@ -9,16 +9,16 @@ blogsRouter.get('/', (req, res) => {
     })
 })
 
-blogsRouter.get('/:id', (req, res, nxt) => {
-    Blog.findById(req.params.id).then(note => {
-        if (note) {
-            res.json(note);
-        } else {
-            res.status(404).end()
-        }
-    })
-        .catch(error => nxt(error));
-})
+// blogsRouter.get('/:id', (req, res, nxt) => {
+//     Blog.findById(req.params.id).then(note => {
+//         if (note) {
+//             res.json(note);
+//         } else {
+//             res.status(404).end()
+//         }
+//     })
+//         .catch(error => nxt(error));
+// })
 
 blogsRouter.post('/', (req, res, nxt) => {
     const blog = new Blog(req.body);
