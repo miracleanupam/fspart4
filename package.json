@@ -8,13 +8,14 @@
     "start": "node index.js",
     "lint": "eslint",
     "lintfix": "eslint . --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose"
   },
   "author": "Anupam Dahal",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^7.11.0",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "jest": "26.6.1"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -22,5 +23,8 @@
     "express": "^4.17.1",
     "mongoose": "^5.10.9",
     "mongoose-unique-validator": "^2.0.3"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
