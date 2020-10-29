@@ -1,5 +1,7 @@
 const info = (...params) => {
-    console.log(...params);
+    if (process.env !== 'test') {
+        console.log(...params);
+    }
 }
 
 const error = (...params) => {
