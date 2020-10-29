@@ -4,18 +4,20 @@
   "description": "Full Stack Course Part 04 Blogs Application",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
     "lint": "eslint",
     "lintfix": "eslint . --fix",
-    "test": "jest --verbose"
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
   "author": "Anupam Dahal",
   "license": "MIT",
   "devDependencies": {
+    "cross-env": "^7.0.2",
     "eslint": "^7.11.0",
+    "jest": "26.6.1",
     "nodemon": "^2.0.6",
-    "jest": "26.6.1"
+    "supertest": "^5.0.0"
   },
   "dependencies": {
     "cors": "^2.8.5",
