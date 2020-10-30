@@ -65,6 +65,26 @@ test('a blog post can be added', async () => {
     expect(contents).toContain('Harry Potter: Prisioner of Azkaban')
 })
 
+test('missing likes property defaults zero', async () => {
+    const newBlog =  {
+            _id: '5a422aa71b54a676234d1002',
+            title: 'Sherlock Homes: The Three Pips',
+            author: 'Sir Arthur Conan Doyle',
+            url: 'http://www.amazon.com',
+            __v: 0
+        }
+    
+    await api.post('/api/blogs')
+            .send(newBlog)
+            .expect(200)
+            .expect('Content-Type', /application\/json/);
+    
+    const reqBlog = await helper.blogById(newBlog._id);
+    const likesValue = reqBlog.likes;
+
+    expect(likesValue).toBe(0);
+})
+
 afterAll(() => {
     mongoose.connection.close();
 })
