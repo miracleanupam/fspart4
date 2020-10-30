@@ -19,7 +19,7 @@ blogsRouter.get('/', async (req, res) => {
 //         .catch(error => nxt(error));
 // })
 
-blogsRouter.post('/',  async (req, res, nxt) => {
+blogsRouter.post('/',  async (req, res) => {
     const blog = new Blog(req.body);
 
     const savedBlog = await blog.save()

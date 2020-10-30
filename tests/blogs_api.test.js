@@ -43,6 +43,28 @@ test('unique identifier is named id', async () => {
     expect(response.body[0].id).toBeDefined();
 })
 
+test('a blog post can be added', async () => {
+    const newBlog = {
+            _id: '5a422aa71b54a676234d1001',
+            title: 'Harry Potter: Prisioner of Azkaban',
+            author: 'JK Rowling',
+            url: 'http://www.amazon.com',
+            likes: 305,
+            __v: 0
+        }
+    
+    await api.post('/api/blogs')
+            .send(newBlog)
+            .expect(200)
+            .expect('Content-Type', /application\/json/);
+
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+    const contents = blogsAtEnd.map(b => b.title);
+    expect(contents).toContain('Harry Potter: Prisioner of Azkaban')
+})
+
 afterAll(() => {
     mongoose.connection.close();
 })
