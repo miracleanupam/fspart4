@@ -27,17 +27,21 @@ blogsRouter.post('/',  async (req, res) => {
         const savedBlog = await blog.save();
 
         res.json(savedBlog);
-        
+
     } else {
         response.status(400).end();
     }
 })
 
-// blogsRouter.delete('/:id', (req, res, nxt) => {
-//     Blog.findByIdAndRemove(request.params.id).then(() => {
-//         response.status(204).end()
-//     }).catch(error => nxt(error));
-// })
+blogsRouter.delete('/:id', async (req, res) => {
+    const blog = await Blog.findById(req.params.id);
+    if (blog) {
+        blog.remove();
+        res.status(204).send();
+    } else {
+        res.status(404).send();
+    }
+})
 
 // blogsRouter.put('/:id', (req, res, nxt) => {
 //     const body = request.body;

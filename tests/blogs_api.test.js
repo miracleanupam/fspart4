@@ -85,7 +85,7 @@ test('missing likes property defaults zero', async () => {
     expect(likesValue).toBe(0);
 });
 
-test.only('missing title and url properties returns 400', async () => {
+test('missing title and url properties returns 400', async () => {
     const blogWOTitle = {
         _id: '5a422aa71b54a676234d1001',
         author: 'JK Rowling',
@@ -115,7 +115,28 @@ test.only('missing title and url properties returns 400', async () => {
 
     blogsAtEnd = await helper.blogsInDb();
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
-})
+});
+
+test('deleting existing blog returns 204', async () => {
+    const blogId = '5a422aa71b54a676234d17f9';
+    await api.delete(`/api/blogs/${blogId}`)
+            .send()
+            .expect(204);
+
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+});
+
+test('deleting non-existing blog returns 404', async () => {
+    const blogId = '7b422aa71b54a676234d17f9';
+
+    await api.delete(`/api/blogs/${blogId}`)
+            .send()
+            .expect(404);
+
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+});
 
 afterAll(() => {
     mongoose.connection.close();
