@@ -20,10 +20,17 @@ blogsRouter.get('/', async (req, res) => {
 // })
 
 blogsRouter.post('/',  async (req, res) => {
-    const blog = new Blog(req.body);
+    if (req.body.title && req.body.url) {
+    
+        const blog = new Blog(req.body);
 
-    const savedBlog = await blog.save()
-    res.json(savedBlog);
+        const savedBlog = await blog.save();
+
+        res.json(savedBlog);
+        
+    } else {
+        response.status(400).end();
+    }
 })
 
 // blogsRouter.delete('/:id', (req, res, nxt) => {
