@@ -1,4 +1,3 @@
-const { TestScheduler } = require('jest');
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const helper = require('./test_helper');
@@ -126,12 +125,15 @@ describe('addition of blog', () => {
 describe('deletion of a blog', () => {
     test('deleting existing blog returns 204', async () => {
         const blogId = '5a422aa71b54a676234d1000';
+
+        let blogsAtStart = await helper.blogsInDb();
+
         await api.delete(`/api/blogs/${blogId}`)
                 .send()
                 .expect(204);
     
         const blogsAtEnd = await helper.blogsInDb();
-        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length - 1);
     
         const ids = blogsAtEnd.map(b => b.id);
         expect(ids).not.toContain(blogId);
