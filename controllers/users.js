@@ -9,10 +9,12 @@ usersRouter.get('/', async (req, res) => {
 
 usersRouter.post('/', async (req, res) => {
     const body = req.body;
-    console.log(req);
     const saltRounds = 10;
-    console.log('add user post bata');
-    console.log(body.password);
+
+    if (body.password.length < 3) {
+        res.status(400).json({error: "Validation Error: Password should not be less than 3 characters"});
+        return;
+    };
     const passwordHash = await bcrypt.hash(body.password, saltRounds);
 
     const user = new User({

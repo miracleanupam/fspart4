@@ -61,10 +61,38 @@ describe('when there is initially one user in db', () => {
                                 // .expect('Content-Type', /application\/json/);
 
         
-        expect(result.body.error).toContain('to be unique');
+        expect(result.body.error).toContain('`username` to be unique');
 
         const usersAtEnd = await helper.usersInDb();
         expect(usersAtEnd).toHaveLength(usersAtStart.length);
+    });
+
+    test('validation fails when username is less than 3 characters with 400', async () => {
+        const invalidNewUser = {
+            username: 'ab',
+            name: "Abraham",
+            password: "helloworld"
+        };
+
+        const result = await api.post('/api/users')
+                                .send(invalidNewUser);
+
+        expect(result.body.error).toContain(`validation failed: username: Path \`username\` (\`${invalidNewUser.username}\`) is shorter than the minimum allowed length (3).`);
+        expect(result.status).toBe(400);
+    });
+
+    test('validation fails when password is less than 3 characters with 400', async () => {
+        const invalidNewUser = {
+            username: 'abraham',
+            name: 'Abraham',
+            password: 'he'
+        };
+
+        const result = await api.post('/api/users')
+                                .send(invalidNewUser);
+
+        expect(result.body.error).toContain('Validation Error: Password should not be less than 3 characters');
+        expect(result.status).toBe(400);
     });
 });
 
