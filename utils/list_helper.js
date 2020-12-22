@@ -18,22 +18,32 @@ const favoriteBlog = (blogs) => {
     return blogsSorted[blogsSorted.length - 1];
 }
 
-// const mostBlogs = (blogs) => {
-//     const details = []
-//     blogs.forEach(b => {
-//         const found = details.find(i => i.author === b.author);
-//         if (found ) {
+const mostBlogs = (blogs) => {
+    let details = [];
+    blogs.forEach(b => {
+        const foundIndex = details.indexOf(details.find(i => i.author === b.author));
+        if (foundIndex >= 0 ) {
+            details[foundIndex].numBlogs = details[foundIndex].numBlogs + 1;
+        } else {
+            details.push({ author: b.author, numBlogs: 1 });
+        }
+    });
+    const detailsSorted = details.sort((a, b) => {
+        if (a.numBlogs < b.numBlogs) {
+            return 1;
+        } else if (a.numBlogs > b.numBlogs) {
+            return -1;
+        } else {
+            return 0;
+        }
+    });
 
-//         }
-//     });
-//     const detailsSorted = details.sort((a, b) => {
-//         a
-//     })
-// }
+    return detailsSorted[0];
+}
 
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    // mostBlogs
+    mostBlogs
 }
