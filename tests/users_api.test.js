@@ -13,7 +13,7 @@ const logger = require('../utils/logger');
 describe('when there is initially one user in db', () => {
     beforeEach(async () => {
         await User.deleteMany({});
-        logger.info('DB cleared');
+        // logger.info('DB cleared');
     
         const passwordHash = await bcrypt.hash('ramram', 10);
         const user = new User({ username: 'ram', passwordHash});
@@ -29,18 +29,14 @@ describe('when there is initially one user in db', () => {
             password: 'shyamshyam'
         };
 
-        console.log('fresh username about to send the api request');
-
         await api.post('/api/users')
                 .send(newUser)
                 .expect(200)
                 .expect('Content-Type', /application\/json/);
 
-        console.log('checking if the user is included at last');
         const usersAtEnd = await helper.usersInDb();
         expect(usersAtEnd).toHaveLength(usersAtStart.length + 1);
 
-        console.log('checking if the newly created username is in the db')
         const usernames = usersAtEnd.map(u => u.username);
         expect(usernames).toContain(newUser.username);
     });
@@ -48,7 +44,6 @@ describe('when there is initially one user in db', () => {
     test('creation fails if username already exists', async () => {
         const usersAtStart = await helper.usersInDb();
 
-        console.log('stale username about to send the api request');
         const newUser = {
             username: 'ram',
             name: 'Ram Bahadur',
@@ -57,9 +52,6 @@ describe('when there is initially one user in db', () => {
 
         const result = await api.post('/api/users')
                                 .send(newUser);
-                                // .expect(400)
-                                // .expect('Content-Type', /application\/json/);
-
         
         expect(result.body.error).toContain('`username` to be unique');
 
